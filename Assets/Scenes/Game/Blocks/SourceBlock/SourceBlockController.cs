@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SourceBlockController : BlockController {
+public class SourceBlockController : PropagatingBlockController {
   public Sprite sprite;
 
   public override void init(BlockPosition position) {
@@ -19,19 +19,7 @@ public class SourceBlockController : BlockController {
       newPaths.Add(new UpdatePath(this, block));
     }
 
-    List<BlockController> nextUpdateBlocks = new List<BlockController>();
-    foreach (UpdatePath path in paths) {
-      if (!path.inList(newPaths)) {
-        nextUpdateBlocks.Add(path.destination); // might need to check if it exists
-      }
-    }
-
-    foreach (UpdatePath path in newPaths) {
-      if (!path.inList(paths)) {
-        nextUpdateBlocks.Add(path.destination);
-      }
-    }
-
+    List<BlockController> nextUpdateBlocks = findPathDifferences(paths, newPaths);
     paths = newPaths;
     return nextUpdateBlocks;
   }
