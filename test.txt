@@ -1,0 +1,47 @@
+int size = 12000 - 1;
+int lays = 1;
+bool clashed = false;
+HashSet<int> stored = new HashSet<int>();
+
+// stored.Add(new BlockPosition(3, 2, 0).GetHashCode());
+
+for (int x = 0; x < size; x++) {
+  for (int y = 0; y < size; y++) {
+    for (int l = 0; l < lays; l++) {
+      // BlockPosition position = new BlockPosition(x - size / 2, y - size / 2, l);
+      int hashCode = BlockPosition.toHashCode(x - size / 2, y - size / 2, l);
+      // int hashCode = BlockPosition.toHashCode(x, y, l);
+      // Debug.Log("normal pos: " + (x - size / 2).ToString() + "," + (y - size / 2).ToString() + "," + l.ToString() + " code: " + hashCode.ToString());
+
+      bool unique = !stored.Contains(hashCode);
+      if (unique) {
+        stored.Add(hashCode);
+      } else {
+        int[] clash = BlockPosition.fromHashCode(hashCode);
+        Debug.Log("position: " + (x - size / 2).ToString() + "," + (y - size / 2).ToString() + "," + l.ToString() + " clashed! code: " + hashCode.ToString());
+        // Debug.Log("position: " + x.ToString() + "," + y.ToString() + "," + l.ToString() + " clashed with: " + clash[0].ToString() + "," + clash[1].ToString() + "," + clash[2].ToString());
+        clashed = true;
+      }
+      // int[] clash = BlockPosition.fromHashCode(hashCode);
+      // Debug.Log("position: " + (x - size / 2).ToString() + "," + (y - size / 2).ToString() + "," + l.ToString() + ", decoded position: " + clash[0].ToString() + "," + clash[1].ToString() + "," + clash[2].ToString() + ", with code: " + hashCode.ToString());
+      if (clashed) break;
+    }
+    if (clashed) break;
+  }
+  if (clashed) break;
+}
+
+get all surrounding blocks
+create empty list of new paths
+for each sblock in surrounding blocks
+  if sblock contains me as the destination of any of its paths
+    if any of my existing paths have sblock as the source
+      if the destination blocks of the path containing sblock as source are different to the list of all surrounding blocks except sblock
+        remove path with sblock as source from paths
+        create new path with sblock as source and destinations as all surrounding blocks except sblock
+    else
+      create new path with sblock as source and destinations as all surrounding blocks except sblock
+
+set charge to true if any paths exists
+
+set list of next updates to 
