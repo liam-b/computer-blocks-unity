@@ -303,12 +303,15 @@ MonoBehaviour:
   gridSize: 2000
   layers: 1
   gridSpacing: 1.1
+  iterationsPerTick: 30
   player: {fileID: 1182676396}
   CableGameObject: {fileID: 4166389955890811584, guid: 9581ed3c4ee1841f2a428a85a7286b64,
     type: 3}
   SourceGameObject: {fileID: 6592153071112466896, guid: bf5ff54aa8f8f4bf2940d315b6165b97,
     type: 3}
   InverterGameObject: {fileID: 5991044720146367506, guid: 52b5c640600bf480ab730516d971605a,
+    type: 3}
+  DelayGameObject: {fileID: 3180486450491935450, guid: a7deac81eb390442fb88655734bb766e,
     type: 3}
   GridLineObject: {fileID: 2186636882358095265, guid: 128edd5903cda466b80c1650ead5e513,
     type: 3}

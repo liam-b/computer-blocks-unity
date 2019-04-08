@@ -12,6 +12,7 @@ public abstract class BlockController : MonoBehaviour {
   public List<UpdatePath> paths;
 
   public abstract List<BlockController> update();
+  public virtual List<BlockController> tick() { return new List<BlockController>(); }
 
   void Awake() {
     grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridController>();

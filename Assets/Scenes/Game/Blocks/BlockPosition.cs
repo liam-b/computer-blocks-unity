@@ -10,13 +10,13 @@ public class BlockRotation {
 }
 
 public class BlockPosition {
+  private static int HASH_RANGE = 10000;
   public int x { get; }
   public int y { get; }
   public int l { get; }
   public int r { get; }
 
   private int hashCode;
-  private static int hashRange = 10000;
 
   public BlockPosition(int x, int y, int l, int r) {
     this.x = x;
@@ -67,7 +67,7 @@ public class BlockPosition {
   }
 
   public int generateHashCode() {
-    uint value = ((uint)(x + hashRange) * (uint)hashRange * 2 + (uint)(y + hashRange)) * 10 + (uint)l;
+    uint value = ((uint)(x + HASH_RANGE) * (uint)HASH_RANGE * 2 + (uint)(y + HASH_RANGE)) * 10 + (uint)l;
     return (int)value;
   }
 }

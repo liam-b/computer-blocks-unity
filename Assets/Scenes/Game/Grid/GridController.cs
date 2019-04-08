@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GridController : MonoBehaviour {
+  private static int MAX_ITERATIONS = 10000;
+
   public Dictionary<BlockPosition, BlockController> blocks;
   public int gridSize;
   public int layers;
   public float gridSpacing;
 
+  private int iterations = 0;
+  public int iterationsPerTick;
   public PlayerController player;
 
   public GameObject CableGameObject;
   public GameObject SourceGameObject;
   public GameObject InverterGameObject;
+  public GameObject DelayGameObject;
   public GameObject GridLineObject;
 
   void Start() {
@@ -35,6 +40,11 @@ public class GridController : MonoBehaviour {
       Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
       removeBlock(worldToBlockPosition(position));
     }
+  }
+
+  void FixedUpdate() {
+    iterations += 1;
+    if (iterations % iterationsPerTick == 0) tick();
   }
 
   private void createGridLine(Direction direction, int index, int size) {
@@ -85,6 +95,7 @@ public class GridController : MonoBehaviour {
     Queue<BlockController> updateQueue = new Queue<BlockController>();
     updateQueue.Enqueue(source);
 
+    int iterations = 0;
     while (updateQueue.Count > 0) {
       Queue<BlockController> nextUpdateQueue = new Queue<BlockController>();
       do {
@@ -94,12 +105,28 @@ public class GridController : MonoBehaviour {
       } while (updateQueue.Count > 0);
 
       updateQueue = nextUpdateQueue;
+      if (iterations++ >= MAX_ITERATIONS) {
+        removeBlock(source.position);
+        break;
+      }
+    }
+  }
+
+  private void tick() {
+    List<BlockController> nextBlockupdates = new List<BlockController>();
+    foreach (BlockController block in blocks.Values) {
+      if (block.type == BlockType.Delay) nextBlockupdates.AddRange(block.tick());
+    }
+
+    foreach (BlockController block in nextBlockupdates) {
+      propagateBlockUpdate(block);
     }
   }
 
   private GameObject blockPrefabFromType(BlockType type) {
     if (type == BlockType.Source) return SourceGameObject;
     if (type == BlockType.Inverter) return InverterGameObject;
+    if (type == BlockType.Delay) return DelayGameObject;
     return CableGameObject;
   }
 }

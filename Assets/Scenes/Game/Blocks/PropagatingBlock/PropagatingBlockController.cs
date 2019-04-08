@@ -8,7 +8,7 @@ public abstract class PropagatingBlockController : BlockController {
   protected List<BlockController> findPathDifferences(List<UpdatePath> oldPaths, List<UpdatePath> newPaths) {
     List<BlockController> nextUpdateBlocks = new List<BlockController>();
     foreach (UpdatePath path in oldPaths) {
-      if (!path.inList(newPaths)) nextUpdateBlocks.Add(path.destination); // might need to check if it exists
+      if (!path.inList(newPaths) && path.destination != null) nextUpdateBlocks.Add(path.destination); // might need to check if it exists
     }
 
     foreach (UpdatePath path in newPaths) {
