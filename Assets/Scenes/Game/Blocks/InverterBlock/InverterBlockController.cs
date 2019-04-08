@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CableBlockController : PropagatingBlockController {
+public class InverterBlockController : PropagatingBlockController {
   public Sprite sprite;
   public Sprite chargedSprite;
 
   public override void init(BlockPosition position) {
     base.init(position);
-    type = BlockType.Cable;
+    type = BlockType.Inverter;
     spriteRenderer.sprite = sprite;
+    transform.Rotate(Vector3.forward * 90 * -position.r);
   }
 
   public override List<BlockController> update() {
@@ -18,38 +19,30 @@ public class CableBlockController : PropagatingBlockController {
 
     bool destinationOfAnyPath = false;
     foreach (BlockController block in surroundingBlocks) {
-      bool destinationOfPath = false;
       foreach (UpdatePath path in block.paths) {
         if (path.destination == this) {
           if (block.type.isDirectional()) {
             if (block.position.isFacing(position)) {
-              destinationOfPath = true;
+              destinationOfAnyPath = true;
               break;
             }
           } else {
-            destinationOfPath = true;
+            destinationOfAnyPath = true;
             break;
-          }
-        }
-      }
-
-      if (destinationOfPath) {
-        destinationOfAnyPath = true;
-        foreach (BlockController surrounding in surroundingBlocks) {
-          if (surrounding.position != block.position) {
-            if (surrounding.type.isDirectional()) {
-              if (!surrounding.position.isFacing(position)) {
-                newPaths.Add(new UpdatePath(block, surrounding));
-              }
-            } else {
-              newPaths.Add(new UpdatePath(block, surrounding));
-            }
           }
         }
       }
     }
 
-    setCharge(destinationOfAnyPath);
+    if (!destinationOfAnyPath) {
+      foreach (BlockController block in surroundingBlocks) {
+        if (position.isFacing(block.position)) {
+          newPaths.Add(new UpdatePath(this, block));
+        }
+      }
+    }
+
+    setCharge(!destinationOfAnyPath);
     List<BlockController> nextUpdateBlocks = findPathDifferences(paths, newPaths);
     paths = newPaths;
     return nextUpdateBlocks;

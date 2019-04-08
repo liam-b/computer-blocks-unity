@@ -12,6 +12,7 @@ public class GridController : MonoBehaviour {
 
   public GameObject CableGameObject;
   public GameObject SourceGameObject;
+  public GameObject InverterGameObject;
   public GameObject GridLineObject;
 
   void Start() {
@@ -26,7 +27,8 @@ public class GridController : MonoBehaviour {
   void Update() {
     if (Input.GetMouseButton(0)) {
       Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-      placeBlock(player.selectedBlockType, worldToBlockPosition(position));
+      BlockPosition blockPosition = worldToBlockPosition(position);
+      placeBlock(player.selectedBlockType, new BlockPosition(blockPosition.x, blockPosition.y, 0, player.selectedRotation));
     }
 
     if (Input.GetMouseButton(1)) {
@@ -63,6 +65,7 @@ public class GridController : MonoBehaviour {
       controller.init(position);
       blocks.Add(position, controller);
 
+      foreach (BlockController surrounding in controller.getSurroundingBlocks()) surrounding.update();
       propagateBlockUpdate(controller);
     }
   }
@@ -74,16 +77,11 @@ public class GridController : MonoBehaviour {
       blocks.Remove(position);
       Destroy(controller.gameObject);
 
-      foreach (BlockController block in surroundingBlocks) {
-        propagateBlockUpdate(block);
-      }
+      foreach (BlockController block in surroundingBlocks) propagateBlockUpdate(block);
     }
   }
 
   private void propagateBlockUpdate(BlockController source) {
-    List<BlockController> surroundingBlocks = source.getSurroundingBlocks();
-    foreach (BlockController block in surroundingBlocks) block.update();
-
     Queue<BlockController> updateQueue = new Queue<BlockController>();
     updateQueue.Enqueue(source);
 
@@ -101,6 +99,7 @@ public class GridController : MonoBehaviour {
 
   private GameObject blockPrefabFromType(BlockType type) {
     if (type == BlockType.Source) return SourceGameObject;
+    if (type == BlockType.Inverter) return InverterGameObject;
     return CableGameObject;
   }
 }

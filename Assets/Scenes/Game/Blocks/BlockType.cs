@@ -2,6 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BlockType {
-  Cable, Source
+public class BlockType {
+  public static BlockType Cable = new BlockType(0);
+  public static BlockType Source = new BlockType(1);
+  public static BlockType Inverter = new BlockType(2);
+
+  private int type;
+
+  private BlockType(int type) {
+    this.type = type;
+  }
+
+  public bool isDirectional() {
+    return type == Inverter.type;
+  }
+
+  public override string ToString() {
+    if (type == Source.type) return "Source";
+    if (type == Inverter.type) return "Inverter";
+    return "Cable";
+  }
 }

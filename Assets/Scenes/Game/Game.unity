@@ -308,6 +308,8 @@ MonoBehaviour:
     type: 3}
   SourceGameObject: {fileID: 6592153071112466896, guid: bf5ff54aa8f8f4bf2940d315b6165b97,
     type: 3}
+  InverterGameObject: {fileID: 5991044720146367506, guid: 52b5c640600bf480ab730516d971605a,
+    type: 3}
   GridLineObject: {fileID: 2186636882358095265, guid: 128edd5903cda466b80c1650ead5e513,
     type: 3}
 --- !u!1 &1182676393
@@ -372,7 +374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a20a64c99468493eaa3deb7530de4a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedBlockType: 0
+  selectedRotation: 0
 --- !u!1 &1253156212
 GameObject:
   m_ObjectHideFlags: 0
