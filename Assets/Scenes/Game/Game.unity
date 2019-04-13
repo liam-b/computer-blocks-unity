@@ -378,6 +378,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedRotation: 0
+  selectedLayer: 0
+  grid: {fileID: 1044458718}
 --- !u!1 &1253156212
 GameObject:
   m_ObjectHideFlags: 0
