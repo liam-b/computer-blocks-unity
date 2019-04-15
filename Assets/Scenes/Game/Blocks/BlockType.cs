@@ -7,6 +7,7 @@ public class BlockType {
   public static BlockType Source = new BlockType(1);
   public static BlockType Inverter = new BlockType(2);
   public static BlockType Delay = new BlockType(3);
+  public static BlockType Via = new BlockType(4);
 
   private int type;
 
@@ -22,6 +23,7 @@ public class BlockType {
     if (type == Source.type) return "Source";
     if (type == Inverter.type) return "Inverter";
     if (type == Delay.type) return "Delay";
+    if (type == Via.type) return "Via";
     return "Cable";
   }
 }

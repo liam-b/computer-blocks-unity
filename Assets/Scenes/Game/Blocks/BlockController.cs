@@ -33,18 +33,24 @@ public abstract class BlockController : MonoBehaviour {
     return blocks;
   }
 
-  private List<BlockController> addBlockToList(List<BlockController> list, BlockPosition position) {
+  protected List<BlockController> addBlockToList(List<BlockController> list, BlockPosition position) {
     if (grid.blocks.ContainsKey(position)) {
       list.Add(grid.blocks[position]);
     }
     return list;
   }
 
-  public void changeLayer(int layer) {
-    spriteRenderer.enabled = position.l == layer;
+  public void updateLayer(int layer) {
+    // spriteRenderer.enabled = position.l == layer;
 
-    // if (position.l == layer) spriteRenderer.color = Color.white;
-    // else spriteRenderer.color = new Color(1f, 1f, 1f, hiddenLayerOpacity);
+    if (position.l == layer) {
+      spriteRenderer.color = Color.white;
+      spriteRenderer.sortingOrder = 1;
+    }
+    else {
+      spriteRenderer.color = new Color(1f, 1f, 1f, 0.3f);
+      spriteRenderer.sortingOrder = 0;
+    }
   }
 
   protected virtual void setCharge(bool newCharge) {

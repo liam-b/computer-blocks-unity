@@ -300,10 +300,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b818fabbf9dc4f66bcef59cb3055904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 1000
+  gridSize: 100
   layers: 3
   gridSpacing: 1.1
-  hiddenLayerOpacity: 0.3
   iterationsPerTick: 30
   player: {fileID: 1182676396}
   CableGameObject: {fileID: 4166389955890811584, guid: 9581ed3c4ee1841f2a428a85a7286b64,
@@ -313,6 +312,8 @@ MonoBehaviour:
   InverterGameObject: {fileID: 5991044720146367506, guid: 52b5c640600bf480ab730516d971605a,
     type: 3}
   DelayGameObject: {fileID: 3180486450491935450, guid: a7deac81eb390442fb88655734bb766e,
+    type: 3}
+  ViaGameObject: {fileID: 5991044720146367506, guid: b3e2cfcebb3d14768a1be5c771e05cfc,
     type: 3}
   GridLineObject: {fileID: 2186636882358095265, guid: 128edd5903cda466b80c1650ead5e513,
     type: 3}
@@ -364,7 +365,7 @@ MonoBehaviour:
   scrollSensitivity: 0.13
   movementSensitivity: 0.04
   minScroll: 1
-  maxScroll: 150
+  maxScroll: 180
   scaleExponent: 0.8
 --- !u!114 &1182676396
 MonoBehaviour:
@@ -549,11 +550,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22458840, guid: 61f00a819c0a5a546b7eea7a104470d7, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 22458840, guid: 61f00a819c0a5a546b7eea7a104470d7, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 64
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 22458840, guid: 61f00a819c0a5a546b7eea7a104470d7, type: 3}
       propertyPath: m_AnchorMin.x
@@ -581,15 +582,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22458840, guid: 61f00a819c0a5a546b7eea7a104470d7, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22458840, guid: 61f00a819c0a5a546b7eea7a104470d7, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11434114, guid: 61f00a819c0a5a546b7eea7a104470d7, type: 3}
       propertyPath: ReadInterval
-      value: 0.5
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 11434114, guid: 61f00a819c0a5a546b7eea7a104470d7, type: 3}
       propertyPath: ColorizeText

@@ -18,6 +18,8 @@ public class GridController : MonoBehaviour {
   public GameObject SourceGameObject;
   public GameObject InverterGameObject;
   public GameObject DelayGameObject;
+  public GameObject ViaGameObject;
+
   public GameObject GridLineObject;
 
   void Start() {
@@ -52,7 +54,7 @@ public class GridController : MonoBehaviour {
   }
 
   public BlockPosition worldToBlockPosition(Vector2 position) {
-    return new BlockPosition(Mathf.RoundToInt(position.x / gridSpacing), Mathf.RoundToInt(position.y / gridSpacing), 0);
+    return new BlockPosition(Mathf.RoundToInt(position.x / gridSpacing), Mathf.RoundToInt(position.y / gridSpacing), player.selectedLayer);
   }
 
   public void placeBlock(BlockType type, BlockPosition position) {
@@ -61,8 +63,12 @@ public class GridController : MonoBehaviour {
       BlockController controller = block.GetComponent<BlockController>();
       controller.init(position);
       blocks.Add(position, controller);
+      controller.updateLayer(player.selectedLayer);
 
-      foreach (BlockController surrounding in controller.getSurroundingBlocks()) surrounding.update();
+      foreach (BlockController surrounding in controller.getSurroundingBlocks()) {
+        surrounding.update();
+        surrounding.tick();
+      }
       propagateBlockUpdate(controller);
     }
   }
@@ -74,7 +80,9 @@ public class GridController : MonoBehaviour {
       blocks.Remove(position);
       Destroy(controller.gameObject);
 
-      foreach (BlockController block in surroundingBlocks) propagateBlockUpdate(block);
+      foreach (BlockController block in surroundingBlocks) {
+        propagateBlockUpdate(block);
+      }
     }
   }
 
@@ -114,6 +122,7 @@ public class GridController : MonoBehaviour {
     if (type == BlockType.Source) return SourceGameObject;
     if (type == BlockType.Inverter) return InverterGameObject;
     if (type == BlockType.Delay) return DelayGameObject;
+    if (type == BlockType.Via) return ViaGameObject;
     return CableGameObject;
   }
 }
