@@ -29,22 +29,9 @@ public class GridController : MonoBehaviour {
     }
   }
 
-  void Update() {
-    if (Input.GetMouseButton(0)) {
-      Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-      BlockPosition blockPosition = worldToBlockPosition(position);
-      placeBlock(player.selectedBlockType, new BlockPosition(blockPosition.x, blockPosition.y, 0, player.selectedRotation));
-    }
-
-    if (Input.GetMouseButton(1)) {
-      Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-      removeBlock(worldToBlockPosition(position));
-    }
-  }
-
   void FixedUpdate() {
     iterations += 1;
-    if (iterations % iterationsPerTick == 0) tick();
+    if (iterations % iterationsPerTick == 0) propagateTickUpdates();
   }
 
   private void createGridLine(Direction direction, int index, int size) {
@@ -112,7 +99,7 @@ public class GridController : MonoBehaviour {
     }
   }
 
-  private void tick() {
+  private void propagateTickUpdates() {
     List<BlockController> nextBlockupdates = new List<BlockController>();
     foreach (BlockController block in blocks.Values) {
       if (block.type == BlockType.Delay) nextBlockupdates.AddRange(block.tick());

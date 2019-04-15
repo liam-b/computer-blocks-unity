@@ -40,6 +40,13 @@ public abstract class BlockController : MonoBehaviour {
     return list;
   }
 
+  public void changeLayer(int layer) {
+    spriteRenderer.enabled = position.l == layer;
+
+    // if (position.l == layer) spriteRenderer.color = Color.white;
+    // else spriteRenderer.color = new Color(1f, 1f, 1f, hiddenLayerOpacity);
+  }
+
   protected virtual void setCharge(bool newCharge) {
     charge = newCharge;
   }

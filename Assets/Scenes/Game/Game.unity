@@ -300,9 +300,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b818fabbf9dc4f66bcef59cb3055904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 2000
-  layers: 1
+  gridSize: 1000
+  layers: 3
   gridSpacing: 1.1
+  hiddenLayerOpacity: 0.3
   iterationsPerTick: 30
   player: {fileID: 1182676396}
   CableGameObject: {fileID: 4166389955890811584, guid: 9581ed3c4ee1841f2a428a85a7286b64,

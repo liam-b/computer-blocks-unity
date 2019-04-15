@@ -18,5 +18,22 @@ public class PlayerController : MonoBehaviour {
     if (Input.GetKeyDown(KeyCode.R)) selectedRotation = (selectedRotation + 1) % 4;
     if (Input.GetKeyDown(KeyCode.LeftBracket)) selectedLayer = (selectedLayer - 1) % grid.layers;
     if (Input.GetKeyDown(KeyCode.RightBracket)) selectedLayer = (selectedLayer + 1) % grid.layers;
+
+    if (Input.GetMouseButton(0)) {
+      Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+      BlockPosition blockPosition = grid.worldToBlockPosition(position);
+      grid.placeBlock(selectedBlockType, new BlockPosition(blockPosition.x, blockPosition.y, selectedLayer, selectedRotation));
+    }
+
+    if (Input.GetMouseButton(1)) {
+      Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+      grid.removeBlock(grid.worldToBlockPosition(position));
+    }
+
+    if (Input.GetKeyDown(KeyCode.LeftBracket) || Input.GetKeyDown(KeyCode.RightBracket)) {
+      foreach (BlockController block in grid.blocks.Values) {
+        block.changeLayer(selectedLayer);
+      }
+    }
   }
 }
