@@ -15,7 +15,7 @@ public class BlockType {
   }
 
   public bool isDirectional() {
-    return type == Inverter.type;
+    return type == Inverter.type || type == Delay.type;
   }
 
   public override string ToString() {

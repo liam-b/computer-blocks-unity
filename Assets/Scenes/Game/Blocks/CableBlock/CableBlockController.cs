@@ -18,32 +18,22 @@ public class CableBlockController : PropagatingBlockController {
 
     bool destinationOfAnyPath = false;
     foreach (BlockController block in surroundingBlocks) {
-      bool destinationOfPath = false;
+      bool destinationOfBlock = false;
       foreach (UpdatePath path in block.paths) {
         if (path.destination == this) {
-          if (block.type.isDirectional()) {
-            if (block.position.isFacing(position)) {
-              destinationOfPath = true;
-              break;
-            }
-          } else {
-            destinationOfPath = true;
-            break;
-          }
+          destinationOfBlock = true;
+          break;
         }
       }
 
-      if (destinationOfPath) {
+      if (destinationOfBlock) {
         destinationOfAnyPath = true;
         foreach (BlockController surrounding in surroundingBlocks) {
           if (surrounding.position != block.position) {
             if (surrounding.type.isDirectional()) {
-              if (!surrounding.position.isFacing(position)) {
-                newPaths.Add(new UpdatePath(block, surrounding));
-              }
-            } else {
-              newPaths.Add(new UpdatePath(block, surrounding));
+              if (!surrounding.position.isFacing(position)) newPaths.Add(new UpdatePath(block, surrounding));
             }
+            else newPaths.Add(new UpdatePath(block, surrounding));
           }
         }
       }

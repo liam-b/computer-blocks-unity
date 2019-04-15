@@ -6,7 +6,7 @@ public class DelayBlockController : PropagatingBlockController {
   public Sprite sprite;
   public Sprite chargedSprite;
 
-  private bool destinationOfAnyPath = false;
+  private List<BlockController> destinationOfBlocks;
   private bool shouldTick = false;
 
   public override void init(BlockPosition position) {
@@ -19,24 +19,17 @@ public class DelayBlockController : PropagatingBlockController {
   public override List<BlockController> update() {
     List<BlockController> surroundingBlocks = getSurroundingBlocks();
 
-    destinationOfAnyPath = false;
+    destinationOfBlocks = new List<BlockController>();
     foreach (BlockController block in surroundingBlocks) {
       foreach (UpdatePath path in block.paths) {
         if (path.destination == this) {
-          if (block.type.isDirectional()) {
-            if (block.position.isFacing(position)) {
-              destinationOfAnyPath = true;
-              break;
-            }
-          } else {
-            destinationOfAnyPath = true;
-            break;
-          }
+          destinationOfBlocks.Add(block);
+          break;
         }
       }
     }
 
-    setCharge(destinationOfAnyPath);
+    setCharge(destinationOfBlocks.Count > 0);
     return new List<BlockController>();
   }
 
@@ -45,10 +38,10 @@ public class DelayBlockController : PropagatingBlockController {
     List<BlockController> nextUpdateBlocks = new List<BlockController>();
 
     if (shouldTick) {
-      if (destinationOfAnyPath) {
+      if (destinationOfBlocks.Count > 0) {
         List<BlockController> surroundingBlocks = getSurroundingBlocks();
         foreach (BlockController block in surroundingBlocks) {
-          if (position.isFacing(block.position)) {
+          if (position.isFacing(block.position) && !destinationOfBlocks.Contains(block)) {
             newPaths.Add(new UpdatePath(this, block));
           }
         }

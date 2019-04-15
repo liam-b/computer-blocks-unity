@@ -21,15 +21,8 @@ public class InverterBlockController : PropagatingBlockController {
     foreach (BlockController block in surroundingBlocks) {
       foreach (UpdatePath path in block.paths) {
         if (path.destination == this) {
-          if (block.type.isDirectional()) {
-            if (block.position.isFacing(position)) {
-              destinationOfAnyPath = true;
-              break;
-            }
-          } else {
-            destinationOfAnyPath = true;
-            break;
-          }
+          destinationOfAnyPath = true;
+          break;
         }
       }
     }
@@ -37,7 +30,10 @@ public class InverterBlockController : PropagatingBlockController {
     if (!destinationOfAnyPath) {
       foreach (BlockController block in surroundingBlocks) {
         if (position.isFacing(block.position)) {
-          newPaths.Add(new UpdatePath(this, block));
+          if (block.type.isDirectional()) {
+            if (!block.position.isFacing(position)) newPaths.Add(new UpdatePath(this, block));
+          }
+          else newPaths.Add(new UpdatePath(this, block));
         }
       }
     }
