@@ -6,6 +6,8 @@ public abstract class BlockController : MonoBehaviour {
   public BlockPosition position;
   public BlockType type;
   public bool charge;
+  public bool shouldTick;
+  public bool destinationOfAnyPath;
 
   protected GridController grid;
   protected SpriteRenderer spriteRenderer;

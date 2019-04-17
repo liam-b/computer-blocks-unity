@@ -16,7 +16,7 @@ public class CableBlockController : PropagatingBlockController {
     List<BlockController> surroundingBlocks = GetSurroundingBlocks();
     List<UpdatePath> newPaths = new List<UpdatePath>();
 
-    bool destinationOfAnyPath = false;
+    destinationOfAnyPath = false;
     foreach (BlockController block in surroundingBlocks) {
       bool destinationOfBlock = false;
       foreach (UpdatePath path in block.paths) {

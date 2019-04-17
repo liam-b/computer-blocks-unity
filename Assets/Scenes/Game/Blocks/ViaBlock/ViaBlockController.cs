@@ -16,7 +16,7 @@ public class ViaBlockController : PropagatingBlockController {
     List<BlockController> surroundingBlocks = GetSurroundingBlocks();
     List<UpdatePath> newPaths = new List<UpdatePath>();
 
-    bool destinationOfAnyPath = false;
+    destinationOfAnyPath = false;
     foreach (BlockController block in surroundingBlocks) {
       if (block.position.l == position.l || (block.position.l != position.l && block.type == BlockType.Via)) {
         bool destinationOfBlock = false;

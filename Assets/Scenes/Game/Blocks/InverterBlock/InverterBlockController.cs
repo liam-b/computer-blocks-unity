@@ -17,7 +17,7 @@ public class InverterBlockController : PropagatingBlockController {
     List<BlockController> surroundingBlocks = GetSurroundingBlocks();
     List<UpdatePath> newPaths = new List<UpdatePath>();
 
-    bool destinationOfAnyPath = false;
+    destinationOfAnyPath = false;
     foreach (BlockController block in surroundingBlocks) {
       foreach (UpdatePath path in block.paths) {
         if (path.destination == this) {

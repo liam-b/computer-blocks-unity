@@ -13,7 +13,7 @@ public class SelectedBlockControllerUI : MonoBehaviour {
   public Sprite delayBlockSprite;
   public Sprite viaBlockSprite;
 
-  void Propagate() {
+  void Update() {
     if (grid.player.selectedBlockType == BlockType.Cable) image.sprite = cableBlockSprite;
     if (grid.player.selectedBlockType == BlockType.Source) image.sprite = sourceBlockSprite;
     if (grid.player.selectedBlockType == BlockType.Inverter) image.sprite = inverterBlockSprite;

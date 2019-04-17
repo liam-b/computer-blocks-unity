@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
 
   public GridController grid;
 
-  void Propagate() {
+  void Update() {
     if (Input.GetKeyDown(KeyCode.Alpha1)) selectedBlockType = BlockType.Cable;
     if (Input.GetKeyDown(KeyCode.Alpha2)) selectedBlockType = BlockType.Source;
     if (Input.GetKeyDown(KeyCode.Alpha3)) selectedBlockType = BlockType.Inverter;

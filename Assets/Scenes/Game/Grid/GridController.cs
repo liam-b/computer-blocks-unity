@@ -138,6 +138,8 @@ public class GridController : MonoBehaviour {
       controller.Init(position);
       controller.UpdateLayer(player.selectedLayer);
       controller.SetCharge(block.charge);
+      controller.shouldTick = block.shouldTick;
+      controller.destinationOfAnyPath = block.destinationOfAnyPath;
       blocks.Add(position, controller);
     }
 
