@@ -31,7 +31,7 @@ public class ViaBlockController : PropagatingBlockController {
           destinationOfAnyPath = true;
           foreach (BlockController surrounding in surroundingBlocks) {
             if (surrounding.position != block.position) {
-              if (surrounding.type.isDirectional()) {
+              if (isDirectional(surrounding.type)) {
                 if (!surrounding.position.isFacing(position)) newPaths.Add(new UpdatePath(block, surrounding));
               }
               else newPaths.Add(new UpdatePath(block, surrounding));
@@ -54,7 +54,7 @@ public class ViaBlockController : PropagatingBlockController {
     return blocks;
   }
 
-  protected override void setCharge(bool newCharge) {
+  public override void setCharge(bool newCharge) {
     if (charge != newCharge) {
       if (newCharge) spriteRenderer.sprite = chargedSprite;
       else spriteRenderer.sprite = sprite;

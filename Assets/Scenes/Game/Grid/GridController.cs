@@ -49,7 +49,7 @@ public class GridController : MonoBehaviour {
     gridLine.GetComponent<GridLineController>().SetLine(direction, offset, size / 2, 1 - gridSpacing);
   }
 
-  public Vector2 blockToWorldPosition(BlockPosition position) {
+  public Vector2 BlockToWorldPosition(BlockPosition position) {
     return new Vector2(position.x * gridSpacing, position.y * gridSpacing);
   }
 
@@ -59,15 +59,15 @@ public class GridController : MonoBehaviour {
 
   public void placeBlock(BlockType type, BlockPosition position) {
     if (!blocks.ContainsKey(position)) {
-      GameObject block = Instantiate(blockPrefabFromType(type), blockToWorldPosition(position), Quaternion.identity, transform);
+      GameObject block = Instantiate(BlockPrefabFromType(type), BlockToWorldPosition(position), Quaternion.identity, transform);
       BlockController controller = block.GetComponent<BlockController>();
       controller.init(position);
-      blocks.Add(position, controller);
       controller.updateLayer(player.selectedLayer);
+      blocks.Add(position, controller);
 
       foreach (BlockController surrounding in controller.getSurroundingBlocks()) {
         surrounding.update();
-        surrounding.tick();
+        surrounding.tick(true);
       }
       propagateBlockUpdate(controller);
     }
@@ -110,7 +110,7 @@ public class GridController : MonoBehaviour {
   private void propagateTickUpdates() {
     List<BlockController> nextBlockupdates = new List<BlockController>();
     foreach (BlockController block in blocks.Values) {
-      if (block.type == BlockType.Delay) nextBlockupdates.AddRange(block.tick());
+      if (block.type == BlockType.Delay) nextBlockupdates.AddRange(block.tick(false));
     }
 
     foreach (BlockController block in nextBlockupdates) {
@@ -118,11 +118,37 @@ public class GridController : MonoBehaviour {
     }
   }
 
-  private GameObject blockPrefabFromType(BlockType type) {
+  private GameObject BlockPrefabFromType(BlockType type) {
     if (type == BlockType.Source) return SourceGameObject;
     if (type == BlockType.Inverter) return InverterGameObject;
     if (type == BlockType.Delay) return DelayGameObject;
     if (type == BlockType.Via) return ViaGameObject;
     return CableGameObject;
+  }
+
+  public void Deserialize(SerializedGrid grid) {
+    layers = grid.layers;
+    foreach (BlockController block in blocks.Values) Destroy(block.gameObject);
+    blocks.Clear();
+
+    foreach (SerializedBlock block in grid.blocks) {
+      BlockPosition position = new BlockPosition(block.position);
+      GameObject blockObject = Instantiate(BlockPrefabFromType((BlockType)block.type), BlockToWorldPosition(position), Quaternion.identity, transform);
+      BlockController controller = blockObject.GetComponent<BlockController>();
+
+      controller.init(position);
+      controller.updateLayer(player.selectedLayer);
+      controller.setCharge(block.charge);
+      blocks.Add(position, controller);
+    }
+
+    foreach (SerializedBlock block in grid.blocks) {
+      BlockPosition position = new BlockPosition(block.position);
+      BlockController controller = blocks[position];
+
+      foreach (SerializedUpdatePath path in block.paths) {
+        controller.paths.Add(new UpdatePath(blocks[new BlockPosition(path.source)], blocks[new BlockPosition(path.destination)]));
+      }
+    }
   }
 }

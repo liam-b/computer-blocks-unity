@@ -42,6 +42,14 @@ public class BlockPosition {
     hashCode = generateHashCode();
   }
 
+  public BlockPosition(SerializedBlockPosition position) {
+    this.x = position.x;
+    this.y = position.y;
+    this.l = position.l;
+    this.r = position.r;
+    hashCode = generateHashCode();
+  }
+
   public bool isFacing(BlockPosition position) {
     if (r == BlockRotation.Right) return position.x == x + 1 && position.y == y;
     if (r == BlockRotation.Up) return position.x == x && position.y + 1 == y;

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
@@ -35,6 +36,21 @@ public class PlayerController : MonoBehaviour {
       foreach (BlockController block in grid.blocks.Values) {
         block.updateLayer(selectedLayer);
       }
+    }
+
+    if (Input.GetKeyDown(KeyCode.LeftShift)) {
+      string json = JsonUtility.ToJson(new SerializedGrid(grid));
+
+      StreamWriter writer = new StreamWriter(Path.Combine(Application.persistentDataPath + Path.DirectorySeparatorChar + "save.json"));
+      writer.Write(json);
+      writer.Close();
+
+      StreamReader reader = new StreamReader(Path.Combine(Application.persistentDataPath + Path.DirectorySeparatorChar + "save.json"));
+      json = reader.ReadToEnd();
+      SerializedGrid sGrid = JsonUtility.FromJson<SerializedGrid>(json);
+      reader.Close();
+
+      grid.Deserialize(sGrid);
     }
   }
 

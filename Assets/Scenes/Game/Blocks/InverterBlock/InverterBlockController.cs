@@ -30,7 +30,7 @@ public class InverterBlockController : PropagatingBlockController {
     if (!destinationOfAnyPath) {
       foreach (BlockController block in surroundingBlocks) {
         if (position.isFacing(block.position)) {
-          if (block.type.isDirectional()) {
+          if (isDirectional(block.type)) {
             if (!block.position.isFacing(position)) newPaths.Add(new UpdatePath(this, block));
           }
           else newPaths.Add(new UpdatePath(this, block));
@@ -44,7 +44,7 @@ public class InverterBlockController : PropagatingBlockController {
     return nextUpdateBlocks;
   }
 
-  protected override void setCharge(bool newCharge) {
+  public override void setCharge(bool newCharge) {
     if (charge != newCharge) {
       if (newCharge) spriteRenderer.sprite = chargedSprite;
       else spriteRenderer.sprite = sprite;

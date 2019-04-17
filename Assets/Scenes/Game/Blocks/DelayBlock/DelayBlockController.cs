@@ -33,11 +33,11 @@ public class DelayBlockController : PropagatingBlockController {
     return new List<BlockController>();
   }
 
-  public override List<BlockController> tick() {
+  public override List<BlockController> tick(bool forcePropagate) {
     List<UpdatePath> newPaths = new List<UpdatePath>();
     List<BlockController> nextUpdateBlocks = new List<BlockController>();
 
-    if (shouldTick) {
+    if (shouldTick || forcePropagate) {
       if (destinationOfBlocks.Count > 0) {
         List<BlockController> surroundingBlocks = getSurroundingBlocks();
         foreach (BlockController block in surroundingBlocks) {
@@ -55,7 +55,7 @@ public class DelayBlockController : PropagatingBlockController {
     return nextUpdateBlocks;
   }
 
-  protected override void setCharge(bool newCharge) {
+  public override void setCharge(bool newCharge) {
     if (charge != newCharge) {
       shouldTick = true;
       if (newCharge) spriteRenderer.sprite = chargedSprite;

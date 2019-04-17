@@ -53,7 +53,11 @@ public abstract class BlockController : MonoBehaviour {
     }
   }
 
-  protected virtual void setCharge(bool newCharge) {
+  protected bool isDirectional(BlockType type) {
+    return type == BlockType.Inverter || type == BlockType.Delay;
+  }
+
+  public virtual void setCharge(bool newCharge) {
     charge = newCharge;
   }
 }
