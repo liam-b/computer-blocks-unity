@@ -50,7 +50,7 @@ public class BlockPosition {
     hashCode = generateHashCode();
   }
 
-  public bool isFacing(BlockPosition position) {
+  public bool IsFacing(BlockPosition position) {
     if (r == BlockRotation.Right) return position.x == x + 1 && position.y == y;
     if (r == BlockRotation.Up) return position.x == x && position.y + 1 == y;
     if (r == BlockRotation.Left) return position.x == x - 1 && position.y == y;

@@ -11,8 +11,8 @@ public abstract class BlockController : MonoBehaviour {
   protected SpriteRenderer spriteRenderer;
   public List<UpdatePath> paths;
 
-  public abstract List<BlockController> update();
-  public virtual List<BlockController> tick(bool forcePropagate) { return new List<BlockController>(); }
+  public abstract List<BlockController> Propagate();
+  public virtual List<BlockController> Tick(bool forcePropagate) { return new List<BlockController>(); }
 
   void Awake() {
     grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridController>();
@@ -20,27 +20,27 @@ public abstract class BlockController : MonoBehaviour {
     paths = new List<UpdatePath>();
   }
 
-  public virtual void init(BlockPosition position) {
+  public virtual void Init(BlockPosition position) {
     this.position = position;
   }
 
-  public virtual List<BlockController> getSurroundingBlocks() {
+  public virtual List<BlockController> GetSurroundingBlocks() {
     List<BlockController> blocks = new List<BlockController>();
-    addBlockToList(blocks, new BlockPosition(position.x + 1, position.y, position.l));
-    addBlockToList(blocks, new BlockPosition(position.x - 1, position.y, position.l));
-    addBlockToList(blocks, new BlockPosition(position.x, position.y + 1, position.l));
-    addBlockToList(blocks, new BlockPosition(position.x, position.y - 1, position.l));
+    AddBlockToList(blocks, new BlockPosition(position.x + 1, position.y, position.l));
+    AddBlockToList(blocks, new BlockPosition(position.x - 1, position.y, position.l));
+    AddBlockToList(blocks, new BlockPosition(position.x, position.y + 1, position.l));
+    AddBlockToList(blocks, new BlockPosition(position.x, position.y - 1, position.l));
     return blocks;
   }
 
-  protected List<BlockController> addBlockToList(List<BlockController> list, BlockPosition position) {
+  protected List<BlockController> AddBlockToList(List<BlockController> list, BlockPosition position) {
     if (grid.blocks.ContainsKey(position)) {
       list.Add(grid.blocks[position]);
     }
     return list;
   }
 
-  public void updateLayer(int layer) {
+  public void UpdateLayer(int layer) {
     // spriteRenderer.enabled = position.l == layer;
 
     if (position.l == layer) {
@@ -53,11 +53,11 @@ public abstract class BlockController : MonoBehaviour {
     }
   }
 
-  protected bool isDirectional(BlockType type) {
+  protected bool TypeIsDirectional(BlockType type) {
     return type == BlockType.Inverter || type == BlockType.Delay;
   }
 
-  public virtual void setCharge(bool newCharge) {
+  public virtual void SetCharge(bool newCharge) {
     charge = newCharge;
   }
 }

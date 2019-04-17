@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
 
   public GridController grid;
 
-  void Update() {
+  void Propagate() {
     if (Input.GetKeyDown(KeyCode.Alpha1)) selectedBlockType = BlockType.Cable;
     if (Input.GetKeyDown(KeyCode.Alpha2)) selectedBlockType = BlockType.Source;
     if (Input.GetKeyDown(KeyCode.Alpha3)) selectedBlockType = BlockType.Inverter;
@@ -23,18 +23,18 @@ public class PlayerController : MonoBehaviour {
 
     if (Input.GetMouseButton(0)) {
       Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-      BlockPosition blockPosition = grid.worldToBlockPosition(position);
-      grid.placeBlock(selectedBlockType, new BlockPosition(blockPosition.x, blockPosition.y, selectedLayer, selectedRotation));
+      BlockPosition blockPosition = grid.WorldToBlockPosition(position);
+      grid.PlaceBlock(selectedBlockType, new BlockPosition(blockPosition.x, blockPosition.y, selectedLayer, selectedRotation));
     }
 
     if (Input.GetMouseButton(1)) {
       Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-      grid.removeBlock(grid.worldToBlockPosition(position));
+      grid.RemoveBlock(grid.WorldToBlockPosition(position));
     }
 
     if (Input.GetKeyDown(KeyCode.LeftBracket) || Input.GetKeyDown(KeyCode.RightBracket)) {
       foreach (BlockController block in grid.blocks.Values) {
-        block.updateLayer(selectedLayer);
+        block.UpdateLayer(selectedLayer);
       }
     }
 

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GridController : MonoBehaviour {
-  private static int MAX_ITERATIONS = 10000;
-
   public Dictionary<BlockPosition, BlockController> blocks;
   public int gridSize;
   public int layers;
@@ -12,6 +10,7 @@ public class GridController : MonoBehaviour {
 
   private int iterations = 0;
   public int iterationsPerTick;
+  public int maxIterations;
   public PlayerController player;
 
   public GameObject CableGameObject;
@@ -26,17 +25,17 @@ public class GridController : MonoBehaviour {
     blocks = new Dictionary<BlockPosition, BlockController>();
 
     for (int i = 0; i < gridSize; i++) {
-      createGridLine(Direction.Vertical, i, gridSize);
-      createGridLine(Direction.Horizontal, i, gridSize);
+      CreateGridLine(Direction.Vertical, i, gridSize);
+      CreateGridLine(Direction.Horizontal, i, gridSize);
     }
   }
 
   void FixedUpdate() {
     iterations += 1;
-    if (iterations % iterationsPerTick == 0) propagateTickUpdates();
+    if (iterations % iterationsPerTick == 0) PropagateTickUpdates();
   }
 
-  private void createGridLine(Direction direction, int index, int size) {
+  private void CreateGridLine(Direction direction, int index, int size) {
     float scale = Mathf.Round(size / 2 * gridSpacing) * gridSpacing;
     Vector2 offset;
     if (direction == Direction.Vertical) {
@@ -53,40 +52,40 @@ public class GridController : MonoBehaviour {
     return new Vector2(position.x * gridSpacing, position.y * gridSpacing);
   }
 
-  public BlockPosition worldToBlockPosition(Vector2 position) {
+  public BlockPosition WorldToBlockPosition(Vector2 position) {
     return new BlockPosition(Mathf.RoundToInt(position.x / gridSpacing), Mathf.RoundToInt(position.y / gridSpacing), player.selectedLayer);
   }
 
-  public void placeBlock(BlockType type, BlockPosition position) {
+  public void PlaceBlock(BlockType type, BlockPosition position) {
     if (!blocks.ContainsKey(position)) {
       GameObject block = Instantiate(BlockPrefabFromType(type), BlockToWorldPosition(position), Quaternion.identity, transform);
       BlockController controller = block.GetComponent<BlockController>();
-      controller.init(position);
-      controller.updateLayer(player.selectedLayer);
+      controller.Init(position);
+      controller.UpdateLayer(player.selectedLayer);
       blocks.Add(position, controller);
 
-      foreach (BlockController surrounding in controller.getSurroundingBlocks()) {
-        surrounding.update();
-        surrounding.tick(true);
+      foreach (BlockController surrounding in controller.GetSurroundingBlocks()) {
+        surrounding.Propagate();
+        surrounding.Tick(true);
       }
-      propagateBlockUpdate(controller);
+      PropagateBlockUpdate(controller);
     }
   }
 
-  public void removeBlock(BlockPosition position) {
+  public void RemoveBlock(BlockPosition position) {
     if (blocks.ContainsKey(position)) {
       BlockController controller = blocks[position];
-      List<BlockController> surroundingBlocks = controller.getSurroundingBlocks();
+      List<BlockController> surroundingBlocks = controller.GetSurroundingBlocks();
       blocks.Remove(position);
       Destroy(controller.gameObject);
 
       foreach (BlockController block in surroundingBlocks) {
-        propagateBlockUpdate(block);
+        PropagateBlockUpdate(block);
       }
     }
   }
 
-  private void propagateBlockUpdate(BlockController source) {
+  private void PropagateBlockUpdate(BlockController source) {
     Queue<BlockController> updateQueue = new Queue<BlockController>();
     updateQueue.Enqueue(source);
 
@@ -94,27 +93,27 @@ public class GridController : MonoBehaviour {
     while (updateQueue.Count > 0) {
       Queue<BlockController> nextUpdateQueue = new Queue<BlockController>();
       do {
-        foreach (BlockController block in updateQueue.Dequeue().update()) {
+        foreach (BlockController block in updateQueue.Dequeue().Propagate()) {
           nextUpdateQueue.Enqueue(block);
         }
       } while (updateQueue.Count > 0);
 
       updateQueue = nextUpdateQueue;
-      if (iterations++ >= MAX_ITERATIONS) {
-        removeBlock(source.position);
+      if (iterations++ >= maxIterations) {
+        RemoveBlock(source.position);
         break;
       }
     }
   }
 
-  private void propagateTickUpdates() {
+  private void PropagateTickUpdates() {
     List<BlockController> nextBlockupdates = new List<BlockController>();
     foreach (BlockController block in blocks.Values) {
-      if (block.type == BlockType.Delay) nextBlockupdates.AddRange(block.tick(false));
+      if (block.type == BlockType.Delay) nextBlockupdates.AddRange(block.Tick(false));
     }
 
     foreach (BlockController block in nextBlockupdates) {
-      propagateBlockUpdate(block);
+      PropagateBlockUpdate(block);
     }
   }
 
@@ -136,9 +135,9 @@ public class GridController : MonoBehaviour {
       GameObject blockObject = Instantiate(BlockPrefabFromType((BlockType)block.type), BlockToWorldPosition(position), Quaternion.identity, transform);
       BlockController controller = blockObject.GetComponent<BlockController>();
 
-      controller.init(position);
-      controller.updateLayer(player.selectedLayer);
-      controller.setCharge(block.charge);
+      controller.Init(position);
+      controller.UpdateLayer(player.selectedLayer);
+      controller.SetCharge(block.charge);
       blocks.Add(position, controller);
     }
 

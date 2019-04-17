@@ -6,14 +6,14 @@ public class CableBlockController : PropagatingBlockController {
   public Sprite sprite;
   public Sprite chargedSprite;
 
-  public override void init(BlockPosition position) {
-    base.init(position);
+  public override void Init(BlockPosition position) {
+    base.Init(position);
     type = BlockType.Cable;
     spriteRenderer.sprite = sprite;
   }
 
-  public override List<BlockController> update() {
-    List<BlockController> surroundingBlocks = getSurroundingBlocks();
+  public override List<BlockController> Propagate() {
+    List<BlockController> surroundingBlocks = GetSurroundingBlocks();
     List<UpdatePath> newPaths = new List<UpdatePath>();
 
     bool destinationOfAnyPath = false;
@@ -30,8 +30,8 @@ public class CableBlockController : PropagatingBlockController {
         destinationOfAnyPath = true;
         foreach (BlockController surrounding in surroundingBlocks) {
           if (surrounding.position != block.position) {
-            if (isDirectional(surrounding.type)) {
-              if (!surrounding.position.isFacing(position)) newPaths.Add(new UpdatePath(block, surrounding));
+            if (TypeIsDirectional(surrounding.type)) {
+              if (!surrounding.position.IsFacing(position)) newPaths.Add(new UpdatePath(block, surrounding));
             }
             else newPaths.Add(new UpdatePath(block, surrounding));
           }
@@ -39,13 +39,13 @@ public class CableBlockController : PropagatingBlockController {
       }
     }
 
-    setCharge(destinationOfAnyPath);
-    List<BlockController> nextUpdateBlocks = findPathDifferences(paths, newPaths);
+    SetCharge(destinationOfAnyPath);
+    List<BlockController> nextUpdateBlocks = FindPathDifferences(paths, newPaths);
     paths = newPaths;
     return nextUpdateBlocks;
   }
 
-  public override void setCharge(bool newCharge) {
+  public override void SetCharge(bool newCharge) {
     if (charge != newCharge) {
       if (newCharge) spriteRenderer.sprite = chargedSprite;
       else spriteRenderer.sprite = sprite;

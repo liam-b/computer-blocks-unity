@@ -440,6 +440,7 @@ MonoBehaviour:
   layers: 3
   gridSpacing: 1.1
   iterationsPerTick: 2
+  maxIterations: 10000
   player: {fileID: 1182676396}
   CableGameObject: {fileID: 4166389955890811584, guid: 9581ed3c4ee1841f2a428a85a7286b64,
     type: 3}
@@ -515,6 +516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a20a64c99468493eaa3deb7530de4a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedBlockType: 0
   selectedRotation: 0
   selectedLayer: 0
   grid: {fileID: 1044458718}

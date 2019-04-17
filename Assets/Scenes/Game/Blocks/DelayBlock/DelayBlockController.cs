@@ -9,15 +9,15 @@ public class DelayBlockController : PropagatingBlockController {
   private List<BlockController> destinationOfBlocks;
   private bool shouldTick = false;
 
-  public override void init(BlockPosition position) {
-    base.init(position);
+  public override void Init(BlockPosition position) {
+    base.Init(position);
     type = BlockType.Delay;
     spriteRenderer.sprite = sprite;
     transform.Rotate(Vector3.forward * 90 * -position.r);
   }
 
-  public override List<BlockController> update() {
-    List<BlockController> surroundingBlocks = getSurroundingBlocks();
+  public override List<BlockController> Propagate() {
+    List<BlockController> surroundingBlocks = GetSurroundingBlocks();
 
     destinationOfBlocks = new List<BlockController>();
     foreach (BlockController block in surroundingBlocks) {
@@ -29,25 +29,25 @@ public class DelayBlockController : PropagatingBlockController {
       }
     }
 
-    setCharge(destinationOfBlocks.Count > 0);
+    SetCharge(destinationOfBlocks.Count > 0);
     return new List<BlockController>();
   }
 
-  public override List<BlockController> tick(bool forcePropagate) {
+  public override List<BlockController> Tick(bool forcePropagate) {
     List<UpdatePath> newPaths = new List<UpdatePath>();
     List<BlockController> nextUpdateBlocks = new List<BlockController>();
 
     if (shouldTick || forcePropagate) {
       if (destinationOfBlocks.Count > 0) {
-        List<BlockController> surroundingBlocks = getSurroundingBlocks();
+        List<BlockController> surroundingBlocks = GetSurroundingBlocks();
         foreach (BlockController block in surroundingBlocks) {
-          if (position.isFacing(block.position) && !destinationOfBlocks.Contains(block)) {
+          if (position.IsFacing(block.position) && !destinationOfBlocks.Contains(block)) {
             newPaths.Add(new UpdatePath(this, block));
           }
         }
       }
 
-      nextUpdateBlocks = findPathDifferences(paths, newPaths);
+      nextUpdateBlocks = FindPathDifferences(paths, newPaths);
       paths = newPaths;
     }
 
@@ -55,7 +55,7 @@ public class DelayBlockController : PropagatingBlockController {
     return nextUpdateBlocks;
   }
 
-  public override void setCharge(bool newCharge) {
+  public override void SetCharge(bool newCharge) {
     if (charge != newCharge) {
       shouldTick = true;
       if (newCharge) spriteRenderer.sprite = chargedSprite;

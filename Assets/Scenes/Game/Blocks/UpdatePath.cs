@@ -15,7 +15,7 @@ public class UpdatePath {
     return source == path.source && destination == path.destination;
   }
 
-  public bool inList(List<UpdatePath> list) {
+  public bool InList(List<UpdatePath> list) {
     bool foundPath = false;
     foreach (UpdatePath path in list) {
       if (equals(path)) foundPath = true;
