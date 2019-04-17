@@ -12,7 +12,7 @@ public abstract class BlockController : MonoBehaviour {
   public List<UpdatePath> paths;
 
   public abstract List<BlockController> update();
-  public virtual List<BlockController> tick() { return new List<BlockController>(); }
+  public virtual List<BlockController> tick(bool forcePropagate) { return new List<BlockController>(); }
 
   void Awake() {
     grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridController>();
@@ -24,7 +24,7 @@ public abstract class BlockController : MonoBehaviour {
     this.position = position;
   }
 
-  public List<BlockController> getSurroundingBlocks() {
+  public virtual List<BlockController> getSurroundingBlocks() {
     List<BlockController> blocks = new List<BlockController>();
     addBlockToList(blocks, new BlockPosition(position.x + 1, position.y, position.l));
     addBlockToList(blocks, new BlockPosition(position.x - 1, position.y, position.l));

@@ -14,7 +14,6 @@ public class ViaBlockController : PropagatingBlockController {
 
   public override List<BlockController> update() {
     List<BlockController> surroundingBlocks = getSurroundingBlocks();
-    surroundingBlocks.AddRange(getSurroundingLayerBlocks());
     List<UpdatePath> newPaths = new List<UpdatePath>();
 
     bool destinationOfAnyPath = false;
@@ -48,8 +47,8 @@ public class ViaBlockController : PropagatingBlockController {
     return nextUpdateBlocks;
   }
 
-  private List<BlockController> getSurroundingLayerBlocks() {
-    List<BlockController> blocks = new List<BlockController>();
+  public override List<BlockController> getSurroundingBlocks() {
+    List<BlockController> blocks = base.getSurroundingBlocks();
     addBlockToList(blocks, new BlockPosition(position.x, position.y, position.l + 1));
     addBlockToList(blocks, new BlockPosition(position.x, position.y, position.l - 1));
     return blocks;
