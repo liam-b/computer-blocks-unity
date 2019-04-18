@@ -8,7 +8,6 @@ public class GridController : MonoBehaviour {
   public int layers;
   public float gridSpacing;
 
-  private int iterations = 0;
   public int iterationsPerTick;
   public int maxIterations;
   public PlayerController player;
@@ -31,8 +30,8 @@ public class GridController : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    iterations += 1;
-    if (iterations % iterationsPerTick == 0) PropagateTickUpdates();
+    int fixedUpdateCount = Mathf.RoundToInt(Time.fixedTime / Time.fixedDeltaTime);
+    if (fixedUpdateCount % iterationsPerTick == 0) PropagateTickUpdates();
   }
 
   private void CreateGridLine(Direction direction, int index, int size) {

@@ -583,7 +583,7 @@ PlayerSettings:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled:
-    Collab: 1
+    Collab: 0
     UNet: 1
   luminIcon:
     m_Name: 
@@ -604,9 +604,9 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: 1fde35b0-ad27-484a-9baf-7fb728d1a997
+  cloudProjectId: e9ca0fe3-5936-4518-a42e-b17f5d372ed8
   framebufferDepthMemorylessMode: 0
-  projectName: computer-blocks (1)
+  projectName: computer-blocks
   organizationId: liam-brennan
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
