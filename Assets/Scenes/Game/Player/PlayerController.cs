@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
   public PauseMenuController pauseMenu;
 
   void Update() {
-    if (!pauseMenu.paused) {
+    if (!pauseMenu.open) {
       if (Input.GetKeyDown(KeyCode.Alpha1)) selectedBlockType = BlockType.Cable;
       if (Input.GetKeyDown(KeyCode.Alpha2)) selectedBlockType = BlockType.Source;
       if (Input.GetKeyDown(KeyCode.Alpha3)) selectedBlockType = BlockType.Inverter;

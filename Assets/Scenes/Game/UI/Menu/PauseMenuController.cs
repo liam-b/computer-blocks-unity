@@ -4,18 +4,45 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour {
-  public bool paused = false;
+  public bool open = false;
 
-  void Update() {
+  public GameObject filter;
+  public GameObject mainMenu;
+  public GameObject savesMenu;
+  public List<GameObject> menus;
+
+  void Start() {
+    menus = new List<GameObject>() {
+      mainMenu,
+      savesMenu
+    };
+  }
+
+  void LateUpdate() {
     if (Input.GetKeyDown(KeyCode.Escape)) {
-      SetPauseState(!paused);
+      if (!open) Open();
+      else Close();
     }
   }
 
-  public void SetPauseState(bool state) {
-    paused = state;
-    foreach (Transform child in transform) {
-      child.gameObject.SetActive(state);
+  public void SetActiveMenu(GameObject activeMenu) {
+    foreach (GameObject menu in menus) {
+      menu.SetActive(false);
+    }
+    activeMenu.SetActive(true);
+  }
+
+  public void Open() {
+    open = true;
+    filter.SetActive(true);
+    SetActiveMenu(mainMenu);
+  }
+
+  public void Close() {
+    open = false;
+    filter.SetActive(false);
+    foreach (GameObject menu in menus) {
+      menu.SetActive(false);
     }
   }
 }

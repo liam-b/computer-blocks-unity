@@ -12,11 +12,11 @@ public class MovementController : MonoBehaviour {
   public PauseMenuController pauseMenu;
 
   void FixedUpdate() {
-    if (!pauseMenu.paused) {
+    if (!pauseMenu.open) {
       float scale = Mathf.Pow(Camera.main.orthographicSize, scaleExponent);
 
       float scroll = Camera.main.orthographicSize + Input.GetAxis("Mouse ScrollWheel") * scrollSensitivity * scale;
-      if (scroll <= maxScroll && scroll >= minScroll) Camera.main.orthographicSize = scroll;
+      Camera.main.orthographicSize = Mathf.Clamp(scroll, minScroll, maxScroll);
 
       if (Input.GetKey(KeyCode.W)) transform.Translate(Vector3.up * movementSensitivity * scale);
       if (Input.GetKey(KeyCode.S)) transform.Translate(Vector3.down * movementSensitivity * scale);
